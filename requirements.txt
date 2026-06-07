@@ -1,0 +1,7 @@
+# conda activate Guardrails
+fastapi
+pydantic
+uvicorn
+presidio-analyzer
+presidio-anonymizer
+unicodedata2
