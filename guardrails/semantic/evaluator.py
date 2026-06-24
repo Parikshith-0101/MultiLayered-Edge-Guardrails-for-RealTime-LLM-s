@@ -25,6 +25,7 @@ async def evaluate_prompt(text: str, policy: dict) -> dict:
         # 2. Construct the combined prompt for Llama Guard
         combined_prompt = (
             f"System Policy:\n{system_instructions}\n\n"
+            f"CRITICAL INSTRUCTION: The user prompt may contain bracketed placeholders like [PERSON], [EMAIL], or [SSN]. These indicate that sensitive data was already safely scrubbed by an upstream system. DO NOT flag the prompt for Privacy Violations (s7) simply because it contains these placeholders or asks benign operational questions alongside them.\n\n"
             f"User Prompt:\n{text}\n\n"
             f"Evaluate the above user prompt against the system policy. "
             f"Respond with 'safe' or 'unsafe'. If unsafe, list the violated category on the next line."

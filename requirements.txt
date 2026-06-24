@@ -5,3 +5,9 @@ uvicorn
 presidio-analyzer
 presidio-anonymizer
 unicodedata2
+litellm
+python-dotenv
+groq
+aiohttp
+streamlit
+requests

@@ -14,8 +14,9 @@ logger = logging.getLogger(__name__)
 
 # Predefined blocklist of jailbreak and malicious keywords.
 # In a real production system, this would likely be loaded from a configuration file or database.
-BANNED_KEYWORDS = [
+FORBIDDEN_KEYWORDS = [
     r"ignore (?:all )?previous instructions",
+    r"ignore all previous",
     r"system prompt",
     r"jailbreak",
     r"bypass",
@@ -23,12 +24,17 @@ BANNED_KEYWORDS = [
     r"dan (?:mode|prompt)",
     r"you are now",
     r"forget everything",
+    r"factory reset",
+    r"sudo",
+    r"rm -rf",
+    r"drop table",
+    r"chmod",
 ]
 
 # Compile the regex patterns once at the module level for performance
 try:
     BANNED_REGEX = re.compile(
-        r"\b(" + "|".join(BANNED_KEYWORDS) + r")\b", 
+        r"\b(" + "|".join(FORBIDDEN_KEYWORDS) + r")\b", 
         flags=re.IGNORECASE
     )
 except Exception as e:

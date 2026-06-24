@@ -17,7 +17,7 @@ async def call_llama_guard(formatted_prompt: str) -> str:
     o/p: `str`: The raw text output from the SLM's response field. If the server is offline, 
          unreachable, or times out, returns the fallback string "error: slm_timeout".
     """
-    endpoint = "http://localhost:11434/api/generate"
+    endpoint = "http://host.docker.internal:11434/api/generate"
     payload = {
         "model": "llama-guard3:1b",
         "prompt": formatted_prompt,
@@ -26,7 +26,7 @@ async def call_llama_guard(formatted_prompt: str) -> str:
 
     try:
         # Define a timeout to prevent hanging requests if the local server is slow or unresponsive
-        timeout = aiohttp.ClientTimeout(total=15)
+        timeout = aiohttp.ClientTimeout(total=60)
         async with aiohttp.ClientSession(timeout=timeout) as session:
             async with session.post(endpoint, json=payload) as response:
                 response.raise_for_status()
