@@ -40,9 +40,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("**📊 Session Stats**")
-    col_a, col_b = st.columns(2)
-    col_a.metric("🚨 Blocked",  st.session_state.get("threats_blocked", 0))
-    col_b.metric("✅ Cleared",  st.session_state.get("threats_allowed", 0))
+    sidebar_stats_placeholder = st.empty()
 
     st.markdown("---")
     st.markdown("**🛡️ Active Security Rails**")
@@ -260,12 +258,23 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # ── STATS BAR ──────────────────────────────────────────────────────────────────
-s1, s2, s3, s4 = st.columns(4)
-s1.metric("💬 Messages Sent",   st.session_state.get("total_messages", 0))
-s2.metric("🚨 Threats Blocked", st.session_state.get("threats_blocked", 0))
-s3.metric("✅ Prompts Cleared", st.session_state.get("threats_allowed", 0))
-s4.metric("🤖 Active Persona",  bot_type.title())
+main_stats_placeholder = st.empty()
 st.markdown("---")
+
+def update_metrics():
+    with sidebar_stats_placeholder.container():
+        col_a, col_b = st.columns(2)
+        col_a.metric("🚨 Blocked",  st.session_state.get("threats_blocked", 0))
+        col_b.metric("✅ Cleared",  st.session_state.get("threats_allowed", 0))
+    with main_stats_placeholder.container():
+        s1, s2, s3, s4 = st.columns(4)
+        s1.metric("💬 Messages Sent",   st.session_state.get("total_messages", 0))
+        s2.metric("🚨 Threats Blocked", st.session_state.get("threats_blocked", 0))
+        s3.metric("✅ Prompts Cleared", st.session_state.get("threats_allowed", 0))
+        s4.metric("🤖 Active Persona",  bot_type.title())
+
+# Initial draw
+update_metrics()
 
 
 # ── SESSION STATE ──────────────────────────────────────────────────────────────
@@ -299,6 +308,7 @@ with chat_container:
 # ── SUBMIT HANDLER ─────────────────────────────────────────────────────────────
 if user_input:
     st.session_state.total_messages += 1
+    update_metrics()
     st.session_state.messages.append({"role": "user", "content": user_input})
     with chat_container:
         with st.chat_message("user", avatar="👤"):
@@ -329,6 +339,7 @@ if user_input:
                                 message_placeholder.markdown(reply)
                                 st.session_state.messages.append({"role": "assistant", "content": reply})
                                 st.session_state.threats_allowed += 1
+                                update_metrics()
 
                             elif response.status_code == 403:
                                 error_detail = response.json().get("detail", "Access Denied")
@@ -353,7 +364,7 @@ if user_input:
                                 )
                                 st.session_state.last_error = error_detail
                                 st.session_state.threats_blocked += 1
-
+                                update_metrics()
                             else:
                                 err = f"Server Error: {response.status_code}"
                                 message_placeholder.error(err)
