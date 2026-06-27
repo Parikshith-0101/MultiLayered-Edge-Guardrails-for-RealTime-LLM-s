@@ -61,21 +61,18 @@ with st.sidebar:
         st.rerun()
 
 # ── THEME & CSS INJECTION ──────────────────────────────────────────────────────
-theme_bg = "radial-gradient(circle at top center, #1e293b 0%, #020617 100%)" if is_dark_mode else "radial-gradient(circle at top center, #f8fafc 0%, #e2e8f0 100%)"
-sidebar_bg = "rgba(2, 6, 23, 0.7)" if is_dark_mode else "rgba(248, 250, 252, 0.7)"
-card_bg = "rgba(15, 23, 42, 0.6)" if is_dark_mode else "rgba(255, 255, 255, 0.9)"
-text_color = "#f8fafc" if is_dark_mode else "#0f172a"
-border_color = "rgba(56, 189, 248, 0.15)" if is_dark_mode else "rgba(148, 163, 184, 0.3)"
-shadow_color = "rgba(56, 189, 248, 0.3)" if is_dark_mode else "rgba(148, 163, 184, 0.4)"
-chat_bg = "rgba(30, 41, 59, 0.4)" if is_dark_mode else "rgba(255, 255, 255, 0.8)"
-input_bg = "#1e1e1e" if is_dark_mode else "#ffffff"
+theme_bg = "#131314" if is_dark_mode else "#FFFFFF"
+sidebar_bg = "#1E1F20" if is_dark_mode else "#F0F4F9"
+card_bg = "#1E1F20" if is_dark_mode else "#F0F4F9"
+text_color = "#E3E3E3" if is_dark_mode else "#1F1F1F"
+border_color = "#333537" if is_dark_mode else "#E0E0E0"
 
 st.markdown(f"""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
-    html, body, p, span, h1, h2, h3, h4, h5, h6, div, label {{
-        font-family: 'Inter', sans-serif;
+    html, body, p, span, h1, h2, h3, h4, h5, h6, div, label, li {{
+        font-family: 'Google Sans', 'Inter', sans-serif;
     }}
     
     /* Let Streamlit keep its icon fonts */
@@ -89,54 +86,40 @@ st.markdown(f"""
 
     .block-container {{
         padding-top: 2rem;
-        padding-bottom: 2rem;
-        max-width: 950px;
+        padding-bottom: 4rem;
+        max-width: 850px;
     }}
     
     /* Custom Scrollbar */
     ::-webkit-scrollbar {{ width: 8px; height: 8px; }}
     ::-webkit-scrollbar-track {{ background: transparent; }}
-    ::-webkit-scrollbar-thumb {{ background: {card_bg}; border-radius: 4px; }}
-    ::-webkit-scrollbar-thumb:hover {{ background: {border_color}; }}
-
-    @keyframes gradientBG {{
-        0% {{background-position: 0% 50%;}}
-        50% {{background-position: 100% 50%;}}
-        100% {{background-position: 0% 50%;}}
-    }}
+    ::-webkit-scrollbar-thumb {{ background: {border_color}; border-radius: 4px; }}
+    ::-webkit-scrollbar-thumb:hover {{ background: #555; }}
 
     .main-title {{
         text-align: center;
-        font-weight: 900;
-        font-size: 3.2rem;
-        background: linear-gradient(90deg, #00D2FF, #3A7BD5, #8A2387, #00D2FF);
-        background-size: 300% 300%;
-        animation: gradientBG 6s ease infinite;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0.1rem;
-        text-shadow: 0px 4px 20px rgba(58,123,213,0.4);
+        font-weight: 500;
+        font-size: 2.2rem;
+        color: {text_color};
+        margin-bottom: 0.2rem;
     }}
     .sub-title {{
         text-align: center;
-        color: #94A3B8;
-        font-size: 1.1rem;
-        font-weight: 500;
-        letter-spacing: 0.5px;
-        margin-bottom: 3rem;
+        color: #888;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 2rem;
     }}
     .audit-header {{
         padding-left: 1rem;
-        border-left: 4px solid #3A7BD5;
-        background: rgba(58,123,213,0.1);
+        border-left: 4px solid #4285F4;
+        background: {card_bg};
         padding: 0.8rem 1rem;
-        border-radius: 0 10px 10px 0;
+        border-radius: 0 8px 8px 0;
         margin-bottom: 1rem;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        backdrop-filter: blur(5px);
     }}
-    .audit-header h3 {{ margin: 0 0 0.2rem; font-size: 1.05rem; }}
-    .audit-header p  {{ margin: 0; font-size: 0.85rem; color: #999; }}
+    .audit-header h3 {{ margin: 0 0 0.2rem; font-size: 1.05rem; font-weight: 500; }}
+    .audit-header p  {{ margin: 0; font-size: 0.85rem; color: #888; }}
 
     /* Metric Cards Styling */
     [data-testid="stMetric"], [data-testid="metric-container"] {{
@@ -144,14 +127,7 @@ st.markdown(f"""
         border: 1px solid {border_color};
         padding: 1rem 1.2rem;
         border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        backdrop-filter: blur(10px);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }}
-    [data-testid="stMetric"]:hover, [data-testid="metric-container"]:hover {{
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px {shadow_color};
-        border: 1px solid rgba(56, 189, 248, 0.6);
+        box-shadow: none;
     }}
     
     /* Global Theme */
@@ -162,9 +138,10 @@ st.markdown(f"""
 
     /* Fix the huge block behind the chat input */
     [data-testid="stBottomBlockContainer"], .stAppBottomBlockContainer, .stBottom, [data-testid="stBottom"] {{
-        background: transparent !important;
-        background-color: transparent !important;
+        background: {theme_bg} !important;
+        background-color: {theme_bg} !important;
         background-image: none !important;
+        border-top: none !important;
     }}
 
     /* Force text colors to match our theme */
@@ -174,70 +151,86 @@ st.markdown(f"""
     
     [data-testid="stSidebar"] {{ 
         background: {sidebar_bg} !important; 
-        border-right: 1px solid rgba(150,150,150,0.1); 
-        backdrop-filter: blur(15px); 
+        border-right: 1px solid {border_color}; 
     }}
     
-    /* Chat Message Defaults & Animations */
-    @keyframes slideUpFade {{
-        from {{ opacity: 0; transform: translateY(20px); }}
-        to {{ opacity: 1; transform: translateY(0); }}
-    }}
-    [data-testid="stChatMessage"] {{ 
-        background: {chat_bg} !important;
-        border: 1px solid rgba(150, 150, 150, 0.1);
-        border-radius: 15px; 
-        backdrop-filter: blur(8px);
-        animation: slideUpFade 0.4s ease-out forwards;
+    /* --- CHAT MESSAGE STYLING --- */
+    
+    /* Ensure chat container and text breaks correctly */
+    [data-testid="stChatMessage"] {{
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 0.5rem 0 !important;
+        animation: none !important;
     }}
     
-    /* Avatar Glows & Hide default icon */
-    [data-testid="stChatMessageAvatarUser"] {{
-        box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
-        border: 2px solid rgba(56, 189, 248, 0.8);
-    }}
-    [data-testid="stChatMessageAvatarAssistant"] {{
-        box-shadow: 0 0 15px rgba(138, 35, 135, 0.4);
-        border: 2px solid rgba(138, 35, 135, 0.8);
+    /* Fix Overflow: apply styling to the inner content area and its children */
+    [data-testid="stChatMessageContent"], 
+    [data-testid="stChatMessageContent"] > div,
+    [data-testid="stChatMessageContent"] .stMarkdown,
+    [data-testid="stChatMessageContent"] p {{
+        max-width: 100% !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        white-space: pre-wrap !important;
+        overflow-x: hidden !important;
     }}
 
-    /* Gemini-Style Animated Chat Input */
-    @keyframes border-flow {{
-        0% {{ background-position: 0% 50%; }}
-        100% {{ background-position: 200% 50%; }}
+    /* Assistant Message (Clean, transparent, standard text) */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {{
+        background: transparent !important;
     }}
     
-    [data-testid="stChatInput"] {{
-        max-width: 750px !important;
-        width: 85% !important;
-        margin: 0 auto !important;
-        border-radius: 30px !important;
+    /* User Message (Dark bubble with gradient border) */
+    [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) [data-testid="stChatMessageContent"] {{
+        background: linear-gradient(#1E1F22, #1E1F22) padding-box,
+                    linear-gradient(90deg, #4285f4, #ea4335, #fbbc05) border-box !important;
         border: 2px solid transparent !important;
-        background: linear-gradient({input_bg}, {input_bg}) padding-box, 
-                    linear-gradient(90deg, #4285f4, #ea4335, #fbbc05, #34a853, #4285f4) border-box !important;
-        background-size: 200% 200% !important;
-        animation: border-flow 4s linear infinite !important;
-        box-shadow: 0 8px 30px rgba(66, 133, 244, 0.2) !important;
-        overflow: hidden !important;
+        border-radius: 20px !important;
+        color: #E3E3E3 !important;
+        padding: 1rem 1.2rem !important;
+        margin: 0.5rem 0;
+    }}
+    
+    /* Remove avatars borders */
+    [data-testid="stChatMessageAvatarUser"], [data-testid="stChatMessageAvatarAssistant"] {{
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+    }}
+
+    /* Gemini-Style Chat Input */
+    [data-testid="stChatInput"] {{
+        max-width: 800px !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        border-radius: 28px !important;
+        border: 1px solid {border_color} !important;
+        background: {card_bg} !important;
+        box-shadow: none !important;
+        animation: none !important;
     }}
     
     [data-testid="stChatInput"]:focus-within {{
-        box-shadow: 0 8px 32px rgba(66, 133, 244, 0.4) !important;
+        border: 1px solid #4285F4 !important;
+        background: {theme_bg} !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
     }}
 
-    /* Remove background and square borders from Streamlit inner elements to let the outer glow shine */
     [data-testid="stChatInput"] > div,
     [data-testid="stChatInput"] > div > div {{
         border: none !important;
         background: transparent !important;
         background-color: transparent !important;
-        border-radius: 30px !important;
     }}
     
     [data-testid="stChatInput"] textarea, .stChatInputTextArea {{
         background: transparent !important;
         background-color: transparent !important;
         color: {text_color} !important;
+        font-family: 'Google Sans', 'Inter', sans-serif !important;
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -245,15 +238,8 @@ st.markdown(f"""
 # ── HERO HEADER ────────────────────────────────────────────────────────────────
 st.markdown(f"""
 <div style="text-align:center; padding: 2rem 0 1.5rem;">
-    <div style="display:inline-block; background:rgba(121,40,202,0.15);
-                border:1px solid rgba(121,40,202,0.4); border-radius:999px;
-                padding:4px 16px; font-size:0.78rem; font-weight:600;
-                color:#a78bfa; letter-spacing:0.8px; text-transform:uppercase;
-                margin-bottom:1rem;">
-        🛡️ &nbsp; Multi-Layer Security Active
-    </div>
     <h1 class="main-title">AI Assistant</h1>
-    <p class="sub-title">Secured by Dual-Rail Edge Guardrails &nbsp;·&nbsp; Persona: <b>{bot_type.title()}</b></p>
+    <p class="sub-title">Persona: <b>{bot_type.title()}</b></p>
 </div>
 """, unsafe_allow_html=True)
 
